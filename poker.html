@@ -5,23 +5,40 @@
     <body>
         <h1>BLACKJACK</h1>
         <p id='message-el'>Want to play a round?</p>
-        <p id='dealers-el'></p>
-        <br>
+<div>
+    <img id ='d1' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='d2' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='d3' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='d4' hidden src='cards/2_of_clubs.png' height=140px width=100px> 
+    <img id ='d5' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='d6' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='d7' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='d8' hidden src='cards/2_of_clubs.png' height=140px width=100px> 
+</div>
+    
+<div>
+    <img id ='p1' hidden src='' height=140px width=100px>
+    <img id ='p2' hidden src='' height=140px width=100px>
+    <img id ='p3' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='p4' hidden src='cards/2_of_clubs.png' height=140px width=100px> 
+    <img id ='p5' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='p6' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='p7' hidden src='cards/2_of_clubs.png' height=140px width=100px>
+    <img id ='p8' hidden src='cards/2_of_clubs.png' height=140px width=100px> 
+</div>
+         <br>
         <p id = 'cards-el'>Cards:</p>
          <p id='bet'>Bet: $0<p>
         <p id ='player-el'></p>
-       
-       
-         
         <div id='pre' >
        
-            <button id= 'less-el'onclick=decrease()>LESS</button>  
-        <button id='bet-el' onclick="startGame();">BET</button>
-      <button id = 'more-el' onclick=increase()>MORE</button>
+        <button id= 'less-el'onclick=decrease()>Decrease</button>  
+        <button id='bet-el' onclick="startGame();">Place bet</button>
+      <button id = 'more-el' onclick=increase()>Increase</button>
         </div> 
         <div >
-        <button id= 'newCard-el' onclick="newCard();">NEW CARD</button>
-        <button id= 'stay-el' onclick="stay();">STAY</button>
+        <button id= 'newCard-el' onclick="newCard();">Hit</button>
+        <button id= 'stay-el' onclick="stay();">Check</button>
     </div>  
      <script src="index.js"></script>
     </body>

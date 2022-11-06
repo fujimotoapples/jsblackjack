@@ -23,7 +23,6 @@ let message = '';
 let playerEl = swoop('player-el')
 playerEl.textContent = player.name+': $'+player.funds
 let messageEl = swoop('message-el')
-
 let cardsEl = swoop('cards-el')
 let dealersEl = swoop('dealers-el')
 let betEl=swoop('bet')
@@ -35,156 +34,250 @@ let stayButt = swoop('stay-el')
 let dealerBlackJack = false
 let dealerBust= false
 let playing = false
-let bet = 0;
+let playerAce = false
+let dealerAce = false
+let bet = 10;
+let cd1 = swoop('d1')
+let cd2 = swoop('d2')
+let cd3 = swoop('d3')
+let cd4 = swoop('d4')
+let cd5 = swoop('d5')
+let cd6 = swoop('d6')
+let cd7 = swoop('d7')
+let cd8 = swoop('d8')
+let cp1 = swoop('p1')
+let cp2 = swoop('p2')
+let cp3 = swoop('p3')
+let cp4 = swoop('p4')
+let cp5 = swoop('p5')
+let cp6 = swoop('p6')
+let cp7 = swoop('p7')
+let cp8 = swoop('p8')
+let cpimg= [cp1,cp2,cp3,cp4,cp5,cp6,cp7,cp8]
+let cdimg = [cd1,cd2,cd3,cd4,cd5,cd6,cd7,cd8]
+betEl.textContent="BET: $"+bet
 
 //hide play buttons to reduce error and confusion
 hideButt(cardsEl)
 hideButt(stayButt)
 hideButt(newCardButt)
 //let sumEl=document.querySelector('.sum-el')
-function getRandomCard(){
+function getRandomCard()
+{console.log('getRandomCard function called')
     let random = Math.floor(Math.random()*13)+1;
-    if (random ===1 ){return 11}
-    else if(random >10){return 10}
-    else {return random}
+    return random
 }
-//bet function
-function increase(){
+function getHandValue(list)
+{console.log('getHandValue function called')
+    val=0
+    let ace = false;
+    for (i in list){
+        if (list[i]>10){val+=10}
+        else if (list[i]===1 && ace===false)
+            {val+=11
+        ace=true}
+        else{val+=list[i]}
+            }
+    if (val>21 && ace===true){
+        val-=10}
+    return val
+}
+        
+function increase()
+{console.log('increase function called')
     bet+=10
     betEl.textContent="BET: $"+bet
 }
-function decrease(){
+function decrease()
+{console.log('decrease function called')
     bet-=10
     betEl.textContent="BET: $"+bet
 }
-function startGame(){
-if (isAlive===false){
+function cleanTable(list1,list2)
+{console.log('cleanTable function called')
+for (let i =0; i<8;i++){
+    p=list1[i]
+    d=list2[i]
+    p.hidden=true
+    d.hidden=true}
+}
 
-    unhideButt(cardsEl)
+function startGame()
+{console.log('startgame button pressed.')
+if (isAlive===false && bet>=10)
+{
+    cleanTable(cpimg,cdimg)
     unhideButt(stayButt)
     unhideButt(newCardButt)
     hideButt(betButt)
     hideButt(moreButt)
     hideButt(lessButt)
-    unhideButt(dealersEl)
     player.funds-=bet
     playerEl.textContent = player.name+': $'+player.funds
-    message="Take your turn!"
-    messageEl.textContent=message
-console.log('startgame button pressed.')
-isAlive = true
-dealerCards.push(getRandomCard(), getRandomCard())
-dealersum=dealerCards[0]+dealerCards[1]
-let firstCard = getRandomCard()
-let secondCard = getRandomCard()
-sum= firstCard+secondCard
-cards.push(firstCard,secondCard)
-console.log(dealerCards)
-console.log(cards)
-renderGame() }
+    isAlive = true
+    dealerCards.push(getRandomCard(), getRandomCard())
+    dealersum=getHandValue(dealerCards)
+    let firstCard = getRandomCard()
+    let secondCard = getRandomCard()
+    cards.push(firstCard,secondCard)
+    sum= getHandValue(cards)
+    display(dealerCards[0],0,cdimg)
+    cd2.src='cards/red_joker.png'
+    cd2.removeAttribute('hidden')
+    renderGame() 
+}
+}
+
+
+function display(card,index,list)
+{console.log('display function called')
+    change=list[index]
+    change.removeAttribute('hidden')
+if (card===1){change.src='cards/ace_of_clubs.png'}
+    else if (card===2){change.src='cards/2_of_clubs.png'}
+        else if (card===3){change.src='cards/3_of_clubs.png'}
+            else if (card===4){change.src='cards/4_of_clubs.png'}
+                else if (card===5){change.src='cards/5_of_clubs.png'}
+                    else if (card===6){change.src='cards/6_of_clubs.png'}
+                        else if (card===7){change.src='cards/7_of_clubs.png'}
+                            else if (card===8){change.src='cards/8_of_clubs.png'}
+                                else if (card===9){change.src='cards/9_of_clubs.png'}
+                                    else if (card===10){change.src='cards/10_of_clubs.png'}
+                                        else if (card===11){change.src='cards/jack_of_clubs.png'}
+                                            else if (card===12){change.src='cards/queen_of_spades2.png'}
+                                                else if (card===13){change.src='cards/king_of_clubs.png'}
 }
 function renderGame(){
-    dealersEl.textContent = 'DEALERS CARDS: ? '+dealerCards[0]
-    cardsEl.textContent='Cards: '
-    for (let i=0; i<cards.length; i++){
-    cardsEl.textContent+=' ' +cards[i]
+    console.log('rendergame called')
+    sum = getHandValue(cards)
+    for (i in cards){
+        display(cards[i],i,cpimg)
     }
-    if (dealersum>21){
-        message = "The dealer busted you win!"
+   
+    for (let i=0; i<cards.length; i++){
+    }
+    if (dealersum>21)
+    {
         dealerBust=true
     }
-    else if (dealersum===21 && dealerCards.length===2&& sum!=21){
-        message= "Dealer has has blackjack! You lose!"
-        dealerBlackJack=true
-        payout()
-    }
-    else if (sum <= 20) {
-        message = "would you like to draw a new card?"
-        console.log("would you like to draw a new card?")
-    } else if (sum===21 && cards.length===2) {
-        message = "BLACKJACK!!!"
-        console.log('blackjack!!')
-        hasBlackJack = true;
-        payout()}
-        else if (sum==21){
-            message='you got 21!'
-        stay()
-    } else  {
-        message = "BUST! You're out of the game." 
-        console.log('you are out of the game!')
+    else if (sum>21) 
+    {
         isAlive = false
         payout()
     }
-    messageEl.textContent = message
-    
+    else if (dealersum===21 && dealerCards.length===2&& sum!=21)
+    {
+        dealerBlackJack=true
+        payout()
+    }
+    else if (sum <= 20) 
+    {
+        message = "Would you like to draw a new card?"
+    } 
+    else if (sum===21 && cards.length===2) 
+    {
+        hasBlackJack = true;
+        payout()
+    }
+    else if (sum===21)
+    {
+    stay()
+    } 
+
+    messageEl.textContent = message  
 }
-function newCard(){
-    console.log('new card func called')
-    if (isAlive===true && hasBlackJack ===false){
+function newCard()
+{console.log('new card func called')
+    if (isAlive===true && hasBlackJack ===false)
+    {
         let newCard = getRandomCard()
-        sum += newCard
         cards.push(newCard)
-        renderGame()}
+    }
+renderGame()
 }
 
-function reset(){
-    console.log('reset func called')
+function reset()
+{console.log('reset func called')
     dealersum = 0
     sum = 0
     dealerCards= []
     cards=[]
     isAlive=false
+    hasBlackJack=false
     dealerBust=false
     dealerBlackJack=false
+    
     playerEl.textContent = player.name+': $'+player.funds
     messageEl.textContent=message+' Would you like to play another hand?'
+    
     hideButt(stayButt)
     hideButt(newCardButt)
     unhideButt(betButt)
     unhideButt(moreButt)
     unhideButt(lessButt)
-    /*hideButt(cardsEl)
-    hideButt(dealersEl)*/
 }
 
-function stay(){
-    if (isAlive){
-console.log('stay function called')
-while(dealersum<=16){
+function stay()
+{ console.log('stay function called')
+if (isAlive)
+{
+while(dealersum<=16)
+{
     dealerNew=getRandomCard()
-    dealersum+=dealerNew
-    if (dealersum>21){dealerBust=true}
-    dealerCards.push(dealerNew)}
-    dealersEl.textContent = 'Dealers Cards: '
-    for (let i=0; i<dealerCards.length;i++){
-    dealersEl.textContent += ' '+dealerCards[i] } 
-    payout()}
+    dealerCards.push(dealerNew)
+    dealersum=getHandValue(dealerCards)
+} 
+
+if (dealersum>21)
+{
+    dealerBust=true
 }
-function payout(){
-    console.log('payout function called')
-    if (isAlive===false){
-        message='You busted, you lost this hand!'}
-    else if (hasBlackJack){player.funds+=bet*2
+
+payout()
+}
+}
+
+function payout()
+{console.log('payout function called')
+    
+    for (i in dealerCards)
+    {
+        display(dealerCards[i],i,cdimg)
+    }
+
+    if (isAlive===false)
+    {
+        message='You busted!'
+    }
+    else if (hasBlackJack)
+    {
+        player.funds+=bet*2
         message='You got blackjack!'
-}
+    }
     else if(dealerBlackJack)
-        {message='DEALER GOT BLACKJACK!'
-    dealersEl.textContent = 'Dealers Cards: '
-        for (let i=0; i<dealerCards.length;i++){
-        dealersEl.textContent += ' '+dealerCards[i] } }
-    else if (dealerBust===true){player.funds+=bet*2
-        message='The dealer busted, you win! '}
-    else if (sum>dealersum){player.funds+=bet*2
-    message='you have higher cards you win!'}
-    else if (dealersum>sum){
-        message='you have lower cards you lose!'}
-    else if (dealersum===sum){player.funds+=bet
-    message='It is a draw!'}
-        
+    {
+        message='DEALER GOT BLACKJACK!'
+    }
+    else if (dealerBust===true)
+    {
+        player.funds+=bet*2
+        message='The dealer busted, you win! '
+    }
+    else if (sum>dealersum)
+    {
+        player.funds+=bet*2
+        message='you have higher cards you win!'
+    }
+    else if (dealersum>sum)
+    {
+        message='you have lower cards you lose!'
+    }
+    else if (dealersum===sum)
+    {
+        player.funds+=bet
+        message='It is a draw!'
+} 
     playerEl.textContent = player.name+': $'+player.funds 
-    reset()
-console.log(player.funds)
-}
-console.log(hasBlackJack)
-console.log(message)
+    reset()}
+
 
