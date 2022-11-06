@@ -1,0 +1,28 @@
+<html>
+    <head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+        <link rel='stylesheet' href='style.css'>
+    </head>
+    <body>
+        <h1>BLACKJACK</h1>
+        <p id='message-el'>Want to play a round?</p>
+        <p id='dealers-el'></p>
+        <br>
+        <p id = 'cards-el'>Cards:</p>
+         <p id='bet'>Bet: $0<p>
+        <p id ='player-el'></p>
+       
+       
+         
+        <div id='pre' >
+       
+            <button id= 'less-el'onclick=decrease()>LESS</button>  
+        <button id='bet-el' onclick="startGame();">BET</button>
+      <button id = 'more-el' onclick=increase()>MORE</button>
+        </div> 
+        <div >
+        <button id= 'newCard-el' onclick="newCard();">NEW CARD</button>
+        <button id= 'stay-el' onclick="stay();">STAY</button>
+    </div>  
+     <script src="index.js"></script>
+    </body>
+</html>
